@@ -1,11 +1,11 @@
 
 function isSameType(value1, value2) {
-  // Check if both are NaN using Number.isNaN
-  if (Number.isNaN(value1) && Number.isNaN(value2)) {
-    return true;
-  }
+  const bothNaN = Number.isNaN(value1) && Number.isNaN(value2);
+  if (bothNaN) return true;
 
-  // Otherwise, check if types are the same
+  // If either is NaN (but not both), return false
+  if (Number.isNaN(value1) || Number.isNaN(value2)) return false;
+
   return typeof value1 === typeof value2;
 }
 
@@ -13,12 +13,14 @@ function isSameType(value1, value2) {
 let value1 = prompt("Enter Start of the Range.");
 let value2 = prompt("Enter End Of the Range.");
 
-// Convert to actual values where needed
-let parsedValue1 = isNaN(Number(value1)) ? value1 : Number(value1);
-let parsedValue2 = isNaN(Number(value2)) ? value2 : Number(value2);
+// Convert input strings to actual values
+function parseValue(val) {
+  if (val === "NaN") return NaN;
+  if (!isNaN(Number(val))) return Number(val);
+  return val;
+}
 
-// Special case for "NaN" string input
-if (value1 === "NaN") parsedValue1 = NaN;
-if (value2 === "NaN") parsedValue2 = NaN;
+const parsed1 = parseValue(value1);
+const parsed2 = parseValue(value2);
 
-alert(isSameType(parsedValue1, parsedValue2));
+alert(isSameType(parsed1, parsed2));
